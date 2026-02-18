@@ -1,8 +1,14 @@
-//
-// Created by mynorm50 on 10/2/26.
-//
+#ifndef CARTA_FLIP_H
+#define CARTA_FLIP_H
 
-#ifndef PRACTICA_1_CARTAFLIP_H
-#define PRACTICA_1_CARTAFLIP_H
+#include "Carta.h"
 
-#endif //PRACTICA_1_CARTAFLIP_H
+class CartaFlip : public Carta {
+public:
+    CartaFlip(Color cClaro, Color cOscuro);
+    
+    void mostrar() const;
+    bool esJugable(Carta* otra, bool acumulacionActiva) const;
+};
+
+#endif

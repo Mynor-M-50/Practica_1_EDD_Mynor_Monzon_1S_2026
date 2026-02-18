@@ -1,8 +1,20 @@
-//
-// Created by mynorm50 on 10/2/26.
-//
+#ifndef CARTA_NUMERO_H
+#define CARTA_NUMERO_H
 
-#ifndef PRACTICA_1_CARTANUMERO_H
-#define PRACTICA_1_CARTANUMERO_H
+#include "Carta.h"
 
-#endif //PRACTICA_1_CARTANUMERO_H
+class CartaNumero : public Carta {
+private:
+    int numeroClaro;
+    int numeroOscuro;
+
+public:
+    CartaNumero(Color cClaro, int nClaro, Color cOscuro, int nOscuro);
+    
+    void mostrar() const;
+    bool esJugable(Carta* otra, bool acumulacionActiva) const;
+    
+    int getNumeroActual() const;
+};
+
+#endif

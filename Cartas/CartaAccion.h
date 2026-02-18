@@ -1,8 +1,14 @@
-//
-// Created by mynorm50 on 10/2/26.
-//
+#ifndef CARTA_ACCION_H
+#define CARTA_ACCION_H
 
-#ifndef PRACTICA_1_CARTAACCION_H
-#define PRACTICA_1_CARTAACCION_H
+#include "Carta.h"
 
-#endif //PRACTICA_1_CARTAACCION_H
+class CartaAccion : public Carta {
+public:
+    CartaAccion(Color cClaro, std::string tipoClaro, Color cOscuro, std::string tipoOscuro);
+
+    void mostrar() const;
+    bool esJugable(Carta* otra, bool acumulacionActiva) const;
+};
+
+#endif

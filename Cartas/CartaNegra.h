@@ -1,8 +1,19 @@
-//
-// Created by mynorm50 on 10/2/26.
-//
+#ifndef CARTA_NEGRA_H
+#define CARTA_NEGRA_H
 
-#ifndef PRACTICA_1_CARTANEGRA_H
-#define PRACTICA_1_CARTANEGRA_H
+#include "Carta.h"
 
-#endif //PRACTICA_1_CARTANEGRA_H
+class CartaNegra : public Carta {
+private:
+    Color colorElegido;
+
+public:
+    CartaNegra(std::string tipoClaro, std::string tipoOscuro);
+
+    void mostrar() const;
+    bool esJugable(Carta* otra, bool acumulacionActiva) const;
+    
+    void setColorElegido(Color c);
+};
+
+#endif
