@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 15/2/26.
+//
+
 #ifndef JUGADOR_H
 #define JUGADOR_H
 
@@ -33,6 +37,7 @@ public:
 
     // Lógica
     void mostrarMano() const;
+    void ordenarMano();
 };
 
 #endif

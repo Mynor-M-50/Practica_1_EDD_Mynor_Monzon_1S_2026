@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #include "Carta.h"
 
 Carta::Carta(Color cClaro, std::string tClaro, Color cOscuro, std::string tOscuro) {
@@ -36,9 +40,9 @@ std::string Carta::getColorANSI(Color c) {
         case AZUL:     return "\033[34m";
         case ROSA:     return "\033[35m";
         case TURQUESA: return "\033[36m";
-        case NARANJA:  return "\033[38;5;208m"; // Color extendido para Naranja
-        case VIOLETA:  return "\033[38;5;93m";  // Color extendido para Violeta
-        case NEGRO:    return "\033[37m";       // Blanco/Gris para cartas negras
+        case NARANJA:  return "\033[38;5;208m";
+        case VIOLETA:  return "\033[38;5;93m";
+        case NEGRO:    return "\033[37m";
         default:       return "\033[0m";
     }
 }

@@ -1,9 +1,12 @@
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #ifndef CARTA_H
 #define CARTA_H
 
 #include <string>
 
-// Enums para lógica interna
 enum Color { ROJO, AMARILLO, AZUL, VERDE, ROSA, TURQUESA, NARANJA, VIOLETA, NEGRO, NINGUNO };
 
 class Carta {
@@ -21,13 +24,13 @@ public:
     virtual void mostrar() const = 0;
     virtual bool esJugable(Carta* otra, bool acumulacionActiva) const = 0;
 
-    // Getters comunes
+    // getters
     Color getColorActual() const;
     std::string getTipoActual() const;
     bool getEsLadoOscuro() const;
     void setLado(bool oscuro);
 
-    // Utilidad para colores en consola
+    // Utilidad para mis colores en la consola
     static std::string getColorANSI(Color c);
     static std::string getColorNombre(Color c);
     static std::string resetColor();

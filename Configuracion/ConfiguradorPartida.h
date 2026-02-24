@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 15/2/26.
+//
+
 #ifndef CONFIGURADOR_PARTIDA_H
 #define CONFIGURADOR_PARTIDA_H
 
@@ -13,10 +17,8 @@ private:
 public:
     ConfiguradorPartida();
     
-    // El método principal que hace las preguntas por consola
     void configurarNuevaPartida();
 
-    // Getters para que el MotorJuego obtenga lo configurado
     ReglasJuego getReglas() const;
     ListaCircular<Jugador*> getJugadores() const;
 };

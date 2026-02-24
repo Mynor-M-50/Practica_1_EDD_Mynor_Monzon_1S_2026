@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #include "CartaAccion.h"
 #include <iostream>
 
@@ -14,7 +18,7 @@ void CartaAccion::mostrar() const {
 bool CartaAccion::esJugable(Carta* otra, bool acumulacionActiva) const {
     if (acumulacionActiva) {
         std::string tipo = getTipoActual();
-        if (tipo == "Mas1" || tipo == "Mas3") {
+        if (tipo == "Mas 1 (+1)" || tipo == "Mas 3 (+3)") {
             return (tipo == otra->getTipoActual());
         }
         return false;

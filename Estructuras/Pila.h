@@ -1,4 +1,7 @@
-// estructuras/Pila.h
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #ifndef PILA_H
 #define PILA_H
 

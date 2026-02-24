@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #include "CartaNegra.h"
 #include <iostream>
 
@@ -11,7 +15,7 @@ void CartaNegra::mostrar() const {
         << "[" << (esLadoOscuro ? "OSCURO" : "CLARO") << "] "
         << "Especial: " << getTipoActual();
     if (colorElegido != NEGRO) {
-        // Mostramos el color elegido con su propio color ANSI
+        // color elegido con su propio color ANSI
         std::cout << " (Color elegido: "
             << getColorANSI(colorElegido) << getColorNombre(colorElegido)
             << getColorANSI(NEGRO) << ")";
@@ -23,9 +27,9 @@ bool CartaNegra::esJugable(Carta* otra, bool acumulacionActiva) const {
     if (acumulacionActiva) {
         std::string tipo = getTipoActual();
         std::string tipoOtra = otra->getTipoActual();
-        // Solo puedes acumular si la carta en mesa también es de robo
-        return (tipo == "Mas2" && tipoOtra == "Mas2") ||
-                (tipo == "Mas6" && tipoOtra == "Mas6");
+        // Solo se podra acumular si la carta en mesa tambien es de robar
+        return (tipo == "Mas 2 (+2)" && tipoOtra == "Mas 2 (+2)") ||
+                (tipo == "Mas 6 (+6)" && tipoOtra == "Mas 6 (+6)");
     }
 
     return true;

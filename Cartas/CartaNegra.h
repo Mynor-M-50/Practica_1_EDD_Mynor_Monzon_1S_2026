@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #ifndef CARTA_NEGRA_H
 #define CARTA_NEGRA_H
 
@@ -5,7 +9,7 @@
 
 class CartaNegra : public Carta {
 private:
-    Color colorElegido; // El color que el jugador elige al lanzarla
+    Color colorElegido;
 
 public:
     CartaNegra(std::string tClaro, std::string tOscuro);

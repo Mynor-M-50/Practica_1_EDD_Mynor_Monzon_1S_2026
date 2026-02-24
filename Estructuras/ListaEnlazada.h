@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #ifndef LISTA_ENLAZADA_H
 #define LISTA_ENLAZADA_H
 
@@ -63,7 +67,7 @@ public:
         size--;
     }
 
-    // Eliminar por posición
+    // Eliminar por posicion
     void deleteAt(int position) {
         if (isEmpty() || position < 1 || position > size) return;
 
@@ -85,7 +89,7 @@ public:
         size--;
     }
 
-    // Obtener nodo en posición
+    // Obtener nodo en posicion
     Nodo<T>* getAt(int position) const {
         if (position < 1 || position > size) return nullptr;
 

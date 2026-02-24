@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 15/2/26.
+//
+
 #ifndef VALIDADOR_FLIP_H
 #define VALIDADOR_FLIP_H
 

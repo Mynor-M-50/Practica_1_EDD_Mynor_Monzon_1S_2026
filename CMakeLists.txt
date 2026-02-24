@@ -33,7 +33,6 @@ add_executable(Practica_1
         Cartas/CartaNegra.h
         Cartas/CartaFlip.cpp
         Cartas/CartaFlip.h
-        Encabezado.h
         Cartas/Personalizadas/CartaPersonalizada.cpp
         Cartas/Personalizadas/CartaPersonalizada.h
 )

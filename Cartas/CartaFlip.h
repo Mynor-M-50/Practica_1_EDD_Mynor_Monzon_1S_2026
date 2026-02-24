@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 12/2/26.
+//
+
 #ifndef CARTA_FLIP_H
 #define CARTA_FLIP_H
 
@@ -5,7 +9,7 @@
 
 class CartaFlip : public Carta {
 public:
-    // Esta carta es "Portal" en ambos lados, pero cambia de color
+    // Carta "Portal" en ambos lados, cambia de colo
     CartaFlip(Color cClaro, Color cOscuro);
     
     void mostrar() const;

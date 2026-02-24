@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 15/2/26.
+//
+
 #ifndef MOTOR_JUEGO_H
 #define MOTOR_JUEGO_H
 
@@ -31,6 +35,7 @@ private:
     void voltearJuego();
     Jugador* elegirJugador();
     void mostrarEstado();
+    void reponerMazo();
 
 public:
     MotorJuego(ReglasJuego reglas, ListaCircular<Jugador*>& jugadores);

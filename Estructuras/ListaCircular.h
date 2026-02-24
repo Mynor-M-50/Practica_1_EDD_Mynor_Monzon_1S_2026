@@ -1,4 +1,7 @@
-// estructuras/ListaCircular.h
+//
+// Created by mynorm50 on 10/2/26.
+//
+
 #ifndef LISTA_CIRCULAR_H
 #define LISTA_CIRCULAR_H
 
@@ -27,7 +30,7 @@ public:
     ~ListaCircular() {
         if (isEmpty()) return;
 
-        Nodo<T>* temp = head->getSiguiente(); // ✅ Renombrado a temp
+        Nodo<T>* temp = head->getSiguiente();
         while (temp != head) {
             Nodo<T>* aBorrar = temp;
             temp = temp->getSiguiente();
@@ -35,7 +38,7 @@ public:
         }
         delete head;
         head = nullptr;
-        actual = nullptr; // ✅ Limpiamos el atributo también
+        actual = nullptr;
     }
 
     bool isEmpty() const {
@@ -97,7 +100,7 @@ public:
         tail->setSiguiente(newNode);
     }
 
-    // Insertar en posición
+    // Insertar en posicion
     void insertAt(const T& value, int position) {
         if (isEmpty() || position <= 1) {
             insertFirst(value);
@@ -106,7 +109,6 @@ public:
 
         int size = getSize();
         if (position > size + 1) {
-            // Si quieres, podrías hacer insertLast(value)
             insertLast(value);
             return;
         }
@@ -117,7 +119,7 @@ public:
         prev->setSiguiente(newNode);
     }
 
-    // Obtener nodo en posición
+    // Obtener nodo en posicion
     Nodo<T>* getAt(int position) const {
         if (isEmpty()) return nullptr;
 
@@ -186,7 +188,7 @@ public:
         delete nodeToDelete;
     }
 
-    // Recorre cierta cantidad de vuelta
+    // Recorre cierta cantidad de vuelt
     void printDebug(int turns) const {
         if (isEmpty()) {
             std::cout << "Lista circular vacía\n";
@@ -224,11 +226,12 @@ public:
 
     void retroceder() {
         if (isEmpty()) return;
-        // En una lista circular simple, retroceder requiere ir hasta el nodo anterior
+
+        // En la lista circular simple, retroceder requiere ir hasta el nodo anterior
         Nodo<T>* temp = actual;
         Nodo<T>* prev = head;
 
-        // Buscamos el nodo anterior al actual
+        // nodo anterior al actual
         while (prev->getSiguiente() != temp) {
             prev = prev->getSiguiente();
         }

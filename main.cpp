@@ -1,10 +1,14 @@
+//
+// Created by mynorm50 on 1/2/26.
+//
+
 #include <iostream>
 #include "Configuracion/ConfiguradorPartida.h"
 #include "Motor/MotorJuego.h"
 
 int main() {
     std::cout << "========================================\n";
-    std::cout << "        UNO FLIP - Estructuras         \n";
+    std::cout << "               UNO / UNO FLIP           \n";
     std::cout << "========================================\n\n";
 
     ConfiguradorPartida configurador;
@@ -12,7 +16,8 @@ int main() {
 
     ReglasJuego reglas = configurador.getReglas();
 
-    // ✅ Guardamos la lista en una variable primero, luego la pasamos
+    // guardamos la lista en una variable primero, luego la pasamos
+
     ListaCircular<Jugador*> jugadores = configurador.getJugadores();
     MotorJuego motor(reglas, jugadores);
 

@@ -1,3 +1,7 @@
+//
+// Created by mynorm50 on 15/2/26.
+//
+
 #include "MotorJuego.h"
 #include "../Cartas/CartaNumero.h"
 #include "../Cartas/CartaAccion.h"
@@ -16,6 +20,21 @@ MotorJuego::MotorJuego(ReglasJuego reglas, ListaCircular<Jugador*>& jugadores) {
     this->acumulacionActiva = false;
     this->cartasAcumuladas = 0;
     this->modoOscuro = false;
+}
+
+static int leerEntero(int min, int max) {
+    int valor;
+    while (true) {
+        std::cin >> valor;
+        if (std::cin.fail() || valor < min || valor > max) {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Entrada invalida. Ingresa un numero entre " << min << " y " << max << ": ";
+        } else {
+            std::cin.ignore(10000, '\n');
+            return valor;
+        }
+    }
 }
 
 void MotorJuego::iniciarJuego() {
@@ -50,36 +69,41 @@ void MotorJuego::generarMazo() {
     Color coloresOscuro[] = { ROSA, TURQUESA, NARANJA, VIOLETA };
 
     for (int m = 0; m < reglas.getNumMazos(); m++) {
-
-        // Cartas Numericas
         for (int i = 0; i < 4; i++) {
-            mazo.push(new CartaNumero(coloresClaro[i], 0, coloresOscuro[i], 1));
+            mazo.push(new CartaNumero(coloresClaro[i], 0, coloresOscuro[i], 0));
             for (int n = 1; n <= 9; n++) {
                 mazo.push(new CartaNumero(coloresClaro[i], n, coloresOscuro[i], n));
-                mazo.push(new CartaNumero(coloresClaro[i], n, coloresOscuro[i], n));
+                if (n <= 7) { // 1-7 dos veces, 8-9 solo una vez
+                    mazo.push(new CartaNumero(coloresClaro[i], n, coloresOscuro[i], n));
+                }
             }
         }
-
         // Cartas de Accion
         for (int i = 0; i < 4; i++) {
-            mazo.push(new CartaAccion(coloresClaro[i], "Salto",   coloresOscuro[i], "SaltoTodos"));
-            mazo.push(new CartaAccion(coloresClaro[i], "Salto",   coloresOscuro[i], "SaltoTodos"));
-            mazo.push(new CartaAccion(coloresClaro[i], "Reversa", coloresOscuro[i], "Reversa"));
-            mazo.push(new CartaAccion(coloresClaro[i], "Reversa", coloresOscuro[i], "Reversa"));
-            mazo.push(new CartaAccion(coloresClaro[i], "Mas1",    coloresOscuro[i], "Mas3"));
-            mazo.push(new CartaAccion(coloresClaro[i], "Mas1",    coloresOscuro[i], "Mas3"));
+            mazo.push(new CartaAccion(coloresClaro[i], "Salto",        coloresOscuro[i], "Salto a Todos"));
+            mazo.push(new CartaAccion(coloresClaro[i], "Salto",        coloresOscuro[i], "Salto a Todos"));
+            mazo.push(new CartaAccion(coloresClaro[i], "Reversa",      coloresOscuro[i], "Reversa"));
+            mazo.push(new CartaAccion(coloresClaro[i], "Reversa",      coloresOscuro[i], "Reversa"));
+            mazo.push(new CartaAccion(coloresClaro[i], "Mas 1 (+1)",   coloresOscuro[i], "Mas 3 (+3)"));
+            mazo.push(new CartaAccion(coloresClaro[i], "Mas 1 (+1)",   coloresOscuro[i], "Mas 3 (+3)"));
         }
 
         // Cartas Negras
         for (int i = 0; i < 4; i++) {
-            mazo.push(new CartaNegra("Comodin", "ColorEterno"));
-            mazo.push(new CartaNegra("Mas2",    "Mas6"));
+            mazo.push(new CartaNegra("Comodin de Color", "ColorEterno"));
+            mazo.push(new CartaNegra("Mas 2 (+2)",       "Mas 6 (+6)"));
         }
 
-        // Cartas Portal
-        for (int i = 0; i < 4; i++) {
-            mazo.push(new CartaFlip(coloresClaro[i], coloresOscuro[i]));
-            mazo.push(new CartaFlip(coloresClaro[i], coloresOscuro[i]));
+        // Cartas Portal / Flip
+        if (reglas.getExpansionFlip()) {
+            for (int i = 0; i < 4; i++) {
+                mazo.push(new CartaFlip(coloresClaro[i], coloresOscuro[i]));
+            }
+        } else {
+            // Sin Flip: agregamos 4 numericas extra
+            for (int i = 0; i < 4; i++) {
+                mazo.push(new CartaNumero(coloresClaro[i], 8, coloresOscuro[i], 8));
+            }
         }
 
         // Cartas Personalizadas
@@ -92,7 +116,6 @@ void MotorJuego::generarMazo() {
 }
 
 void MotorJuego::barajarMazo() {
-    // 1. Pasamos todo de la Pila a tu ListaEnlazada
     ListaEnlazada<Carta*> temp;
     while (!mazo.isEmpty()) {
         temp.insertarAlFinal(mazo.pop());
@@ -101,8 +124,9 @@ void MotorJuego::barajarMazo() {
     int n = temp.getSize();
     if (n < 2) return;
 
-    // 2. Barajamos intercambiando solo los VALORES (punteros a carta)
-    // Hacemos unas 200 pasadas para que quede bien mezclado
+    /* Barajamos intercambiando solo los VALORES (punteros a carta)
+    y hacemos unas 200 pasadas para que quede bien mezclado */
+
     for (int i = 0; i < 200; i++) {
         int pos1 = (rand() % n) + 1;
         int pos2 = (rand() % n) + 1;
@@ -112,7 +136,7 @@ void MotorJuego::barajarMazo() {
             Nodo<Carta*>* nodo2 = temp.getAt(pos2);
 
             if (nodo1 != nullptr && nodo2 != nullptr) {
-                // Intercambiamos las cartas, NO los nodos
+                // Intercambiamos las cartas sin intercambiar nodo
                 Carta* aux = nodo1->getValor();
                 nodo1->setValor(nodo2->getValor());
                 nodo2->setValor(aux);
@@ -120,12 +144,12 @@ void MotorJuego::barajarMazo() {
         }
     }
 
-    // 3. Metemos las cartas de vuelta a la Pila
+    // metemos las cartas de vuelta a la Pila
     for (int i = 1; i <= n; i++) {
         mazo.push(temp.getAt(i)->getValor());
     }
 
-    std::cout << "✅ Mazo barajado con exito." << std::endl;
+    std::cout << "Mazo barajado con exito." << std::endl;
 }
 
 void MotorJuego::repartirCartas() {
@@ -140,12 +164,12 @@ void MotorJuego::repartirCartas() {
         }
     }
 
-    // Primera carta del descarte (si es negra o Portal, buscar la primera válida)
+    // primera carta del descarte (si es negra o Portal, buscar la primera que pueda ser aceptada)
     ListaEnlazada<Carta*> temporales;
     Carta* primera = mazo.pop();
 
     while (primera != nullptr &&
-           (primera->getColorActual() == NEGRO || primera->getTipoActual() == "Portal")) {
+        (primera->getColorActual() == NEGRO || primera->getTipoActual() == "Portal")) {
         temporales.insertarAlFinal(primera);
         if (mazo.isEmpty()) break;
         primera = mazo.pop();
@@ -154,15 +178,15 @@ void MotorJuego::repartirCartas() {
     if (primera != nullptr && primera->getColorActual() != NEGRO && primera->getTipoActual() != "Portal") {
         descarte.push(primera);
     } else {
-        // Caso extremo: todas las cartas son negras/portal, usar la primera de todas formas
+        // un Caso extremo: todas las cartas son negras/portal, usar la primera de todas formas
         if (primera != nullptr) descarte.push(primera);
     }
 
-    // Devolver las cartas descartadas al fondo del mazo
+    // devolver las cartas descartadas al fondo del mazo
     for (int i = temporales.getSize(); i >= 1; i--) {
         // Las metemos al final pasando por lista temporal inversa
     }
-    // Reinsertar en orden correcto
+    // Re insertar en orden correcto
     Nodo<Carta*>* t = temporales.getHead();
     while (t != nullptr) {
         mazo.push(t->getValor());
@@ -177,55 +201,89 @@ void MotorJuego::mostrarEstado() {
     std::cout << "Carta en mesa: ";
     descarte.peek()->mostrar();
     std::cout << "Modo: " << (modoOscuro ? "OSCURO" : "CLARO") << std::endl;
+    std::cout << "Mazo: [" << mazo.getSize() << " cartas] | ";
+    std::cout << "Descarte: [" << descarte.getSize() << " cartas]" << std::endl;
     std::cout << "----------------------------------------" << std::endl;
 
-    jugadores.getActual()->getValor()->mostrarMano();
+    Jugador* actual = jugadores.getActual()->getValor();
+    actual->ordenarMano();
+    actual->mostrarMano();
 }
 
 void MotorJuego::ejecutarTurno(Jugador* jugador) {
     std::cout << "\nTurno de: " << jugador->getNombre() << std::endl;
+    jugador->setDijoUno(false);
 
     if (acumulacionActiva) {
         std::cout << "Hay " << cartasAcumuladas
             << " cartas acumuladas. Acumula o roba (0)." << std::endl;
     }
 
-    int opcion;
-    std::cout << "Elige carta (1-" << jugador->getCantidadCartas() << ") o 0 para robar: ";
-    std::cin >> opcion;
+    bool turnoTerminado = false;
+    while (!turnoTerminado) {
+        int opcion;
+        std::cout << "Elige carta (1-" << jugador->getCantidadCartas() << ") o 0 para robar: ";
+        opcion = leerEntero(0, jugador->getCantidadCartas());
 
-    if (opcion == 0) {
-        // Robar
-        if (acumulacionActiva) {
-            for (int i = 0; i < cartasAcumuladas; i++) {
+        if (opcion == 0) {
+            // robar manualmente
+            if (acumulacionActiva) {
+                for (int i = 0; i < cartasAcumuladas; i++) {
+                    if (mazo.isEmpty()) reponerMazo();
+                    Carta* robada = mazo.pop();
+                    if (robada) robada->setLado(modoOscuro);
+                    jugador->agregarCarta(robada);
+                }
+                acumulacionActiva = false;
+                cartasAcumuladas = 0;
+                std::cout << jugador->getNombre() << " robo las cartas acumuladas." << std::endl;
+            } else {
+                if (mazo.isEmpty()) reponerMazo();
                 Carta* robada = mazo.pop();
                 if (robada) robada->setLado(modoOscuro);
                 jugador->agregarCarta(robada);
+                std::cout << jugador->getNombre() << " robo una carta." << std::endl;
             }
-            acumulacionActiva = false;
-            cartasAcumuladas = 0;
-            std::cout << jugador->getNombre() << " robo las cartas acumuladas." << std::endl;
-        } else {
-            Carta* robada = mazo.pop();
-            if (robada) robada->setLado(modoOscuro);
-            jugador->agregarCarta(robada);
-            std::cout << jugador->getNombre() << " robo una carta." << std::endl;
-        }
+            turnoTerminado = true;
 
-    } else if (opcion >= 1 && opcion <= jugador->getCantidadCartas()) {
-        Carta* elegida = jugador->jugarCartaEnPosicion(opcion);
-        Carta* enMesa  = descarte.peek();
+        } else if (opcion >= 1 && opcion <= jugador->getCantidadCartas()) {
+            Carta* elegida = jugador->jugarCartaEnPosicion(opcion);
+            Carta* enMesa  = descarte.peek();
 
-        if (ValidadorFlip::esJugadaValida(elegida, enMesa, reglas, acumulacionActiva)) {
-            descarte.push(elegida);
-            aplicarEfecto(elegida, jugador);
+            if (ValidadorFlip::esJugadaValida(elegida, enMesa, reglas, acumulacionActiva)) {
+                descarte.push(elegida);
+                aplicarEfecto(elegida, jugador);
+
+                if (jugador->getCantidadCartas() == 1) {
+                    int opcionUno;
+                    std::cout << jugador->getNombre() << ", tienes UNA carta. Quieres gritar UNO? (1 = Si / 2 = No): ";
+                    opcionUno = leerEntero(1, 2);
+                    if (opcionUno == 1) {
+                        jugador->setDijoUno(true);
+                        std::cout << "¡" << jugador->getNombre() << " grito UNO!\n";
+                    }
+                }
+
+                turnoTerminado = true;
+            } else {
+                // Carta no válida: regresa a la mano, el jugador vuelve a elegir
+                std::cout << " Jugada no valida, elige otra carta o presiona 0 para robar." << std::endl;
+                jugador->agregarCarta(elegida);
+            }
         } else {
-            std::cout << "Jugada no valida. Robas una carta." << std::endl;
-            jugador->agregarCarta(elegida);
-            jugador->agregarCarta(mazo.pop());
+            std::cout << "Opcion no valida, intenta de nuevo." << std::endl;
         }
-    } else {
-        std::cout << "Opcion invalida. Pierdes tu turno." << std::endl;
+    }
+    if (jugador->getCantidadCartas() == 1 && !jugador->getDijoUno()) {
+        std::cout << jugador->getNombre() << " no dijo UNO. Roba 2 cartas como penalizacion.\n";
+        for (int i = 0; i < 2; i++) {
+            if (mazo.isEmpty()) reponerMazo();
+            Carta* p = mazo.pop();
+            if (p) {
+                p->setLado(modoOscuro);
+                jugador->agregarCarta(p);
+            }
+        }
     }
 }
 
@@ -233,23 +291,23 @@ void MotorJuego::aplicarEfecto(Carta* carta, Jugador* jugadorActual) {
     std::string tipo = carta->getTipoActual();
 
     if (tipo == "Salto") {
-        std::cout << "Salto! El siguiente jugador pierde su turno." << std::endl;
+        std::cout << "Salto! - El siguiente jugador pierde su turno." << std::endl;
         siguienteTurno();
 
-    } else if (tipo == "SaltoTodos") {
-        std::cout << "Salto a TODOS! Vuelves a jugar." << std::endl;
-        // No avanzamos, el mismo jugador repite
+    } else if (tipo == "Salto a Todos") {
+        std::cout << "Salto a TODOS! - Vuelves a jugar." << std::endl;
+        // No avanzamos
 
     } else if (tipo == "Reversa") {
         sentidoHorario = !sentidoHorario;
-        std::cout << "Reversa! Cambia la direccion." << std::endl;
+        std::cout << "Reversa! - Cambia la direccion." << std::endl;
 
-    } else if (tipo == "Mas1" || tipo == "Mas2" || tipo == "Mas3" || tipo == "Mas6") {
+    } else if (tipo == "Mas 1 (+1)" || tipo == "Mas 2 (+2)" || tipo == "Mas 3 (+3)" || tipo == "Mas 6 (+6)") {
         int cantidad = 0;
-        if      (tipo == "Mas1") cantidad = 1;
-        else if (tipo == "Mas2") cantidad = 2;
-        else if (tipo == "Mas3") cantidad = 3;
-        else if (tipo == "Mas6") cantidad = 6;
+        if      (tipo == "Mas 1 (+1)") cantidad = 1;
+        else if (tipo == "Mas 2 (+2)") cantidad = 2;
+        else if (tipo == "Mas 3 (+3)") cantidad = 3;
+        else if (tipo == "Mas 6 (+6)") cantidad = 6;
 
         if (reglas.getAcumulacion()) {
             acumulacionActiva = true;
@@ -266,25 +324,55 @@ void MotorJuego::aplicarEfecto(Carta* carta, Jugador* jugadorActual) {
             std::cout << siguiente->getNombre() << " roba " << cantidad << " cartas." << std::endl;
         }
 
-    } else if (tipo == "Comodin" || tipo == "ColorEterno") {
+    } else if (tipo == "Comodin de Color" || tipo == "ColorEterno") {
         std::cout << "Elige un color:" << std::endl;
         if (!modoOscuro) {
             std::cout << "1. Rojo  2. Amarillo  3. Azul  4. Verde" << std::endl;
         } else {
             std::cout << "1. Rosa  2. Turquesa  3. Naranja  4. Violeta" << std::endl;
         }
-        int c; std::cin >> c;
-        if (c < 1 || c > 4) c = 1;
+
+        int c = leerEntero(1, 4);
+        Color claro[]  = { ROJO, AMARILLO, AZUL, VERDE };
+        Color oscuro[] = { ROSA, TURQUESA, NARANJA, VIOLETA };
+        Color elegido = modoOscuro ? oscuro[c-1] : claro[c-1];
 
         CartaNegra* negra = dynamic_cast<CartaNegra*>(carta);
         if (negra != nullptr) {
-            Color claro[]  = { ROJO, AMARILLO, AZUL, VERDE };
-            Color oscuro[] = { ROSA, TURQUESA, NARANJA, VIOLETA };
-            negra->setColorElegido(modoOscuro ? oscuro[c-1] : claro[c-1]);
+            negra->setColorElegido(elegido);
+        }
+
+        // Lógica especial del color eterno
+        if (modoOscuro && tipo == "ColorEterno") {
+            siguienteTurno();
+            Jugador* victima = jugadores.getActual()->getValor();
+            std::cout << victima->getNombre() << " debe robar hasta encontrar el color elegido..." << std::endl;
+
+            bool encontrado = false;
+            while (!encontrado) {
+                if (mazo.isEmpty()) reponerMazo();
+                Carta* robada = mazo.pop();
+                if (robada) {
+                    robada->setLado(modoOscuro);
+                    victima->agregarCarta(robada);
+                    // Si la carta robada tiene el color que eligió el jugador anterior, para.
+                    if (robada->getColorActual() == elegido) {
+                        encontrado = true;
+                        std::cout << "¡Encontro una carta " << (c==1?"Rosa":c==2?"Turquesa":c==3?"Naranja":"Violeta") << "!" << std::endl;
+                    }
+                } else {
+                    break;
+                }
+            }
         }
 
     } else if (tipo == "Portal") {
-        voltearJuego();
+        if (reglas.getExpansionFlip()) {
+            voltearJuego();
+            std::cout << "¡El juego ha sido volteado al lado Oscuro!\n";
+        } else {
+            std::cout << "Carta Portal jugada, pero la expansion FLIP esta desactivada.\n";
+        }
 
     } else if (tipo == "PistolaLaser" || tipo == "CanonLaser") {
         CartaPersonalizada* p = dynamic_cast<CartaPersonalizada*>(carta);
@@ -294,6 +382,7 @@ void MotorJuego::aplicarEfecto(Carta* carta, Jugador* jugadorActual) {
             // Lado Claro: 7 cartas a un jugador
             Jugador* objetivo = elegirJugador();
             for (int i = 0; i < 7; i++) {
+                if (mazo.isEmpty()) reponerMazo();
                 Carta* robada = mazo.pop();
                 if (robada) robada->setLado(modoOscuro);
                 objetivo->agregarCarta(robada);
@@ -301,7 +390,8 @@ void MotorJuego::aplicarEfecto(Carta* carta, Jugador* jugadorActual) {
             std::cout << objetivo->getNombre() << " roba 7 cartas (Pistola Laser)." << std::endl;
 
             std::cout << "Elige color (1.Rojo 2.Amarillo 3.Azul 4.Verde): ";
-            int c; std::cin >> c;
+            int c;
+            c = leerEntero(1, 4);
             if (c < 1 || c > 4) c = 1;
             Color claro[] = { ROJO, AMARILLO, AZUL, VERDE };
             p->setColorElegido(claro[c-1]);
@@ -314,6 +404,7 @@ void MotorJuego::aplicarEfecto(Carta* carta, Jugador* jugadorActual) {
                 Jugador* jug = jugadores.getActual()->getValor();
                 if (jug != jugadorActual) {
                     for (int i = 0; i < 5; i++) {
+                        if (mazo.isEmpty()) reponerMazo();
                         Carta* robada = mazo.pop();
                         if (robada) robada->setLado(modoOscuro);
                         jug->agregarCarta(robada);
@@ -323,7 +414,8 @@ void MotorJuego::aplicarEfecto(Carta* carta, Jugador* jugadorActual) {
             }
 
             std::cout << "Elige color (1.Rosa 2.Turquesa 3.Naranja 4.Violeta): ";
-            int c; std::cin >> c;
+            int c;
+            c = leerEntero(1, 4);
             if (c < 1 || c > 4) c = 1;
             Color oscuro[] = { ROSA, TURQUESA, NARANJA, VIOLETA };
             p->setColorElegido(oscuro[c-1]);
@@ -335,23 +427,23 @@ void MotorJuego::voltearJuego() {
     modoOscuro = !modoOscuro;
     reglas.conmutarModo();
 
-    // 1) Voltear MAZO
+    // Voltear Mazo
     for (Nodo<Carta*>* n = mazo.getTop(); n != nullptr; n = n->getSiguiente()) {
         if (n->getValor() != nullptr) n->getValor()->setLado(modoOscuro);
     }
 
-    // 2) Voltear DESCARTE
+    // Voltear descarte
     for (Nodo<Carta*>* n = descarte.getTop(); n != nullptr; n = n->getSiguiente()) {
         if (n->getValor() != nullptr) n->getValor()->setLado(modoOscuro);
     }
 
-    // 3) Voltear MANOS de todos los jugadores
+    // Voltear manos de todos los jugadores
     Nodo<Jugador*>* jn = jugadores.getHead();
     int total = reglas.getNumJugadores();
 
     for (int i = 0; i < total; i++) {
         Jugador* j = jn->getValor();
-        // Recorremos la lista enlazada interna "mano" mediante verCartaEnPosicion
+        // recorremos la lista enlazada interna "mano" mediante verCartaEnPosicion
         for (int k = 1; k <= j->getCantidadCartas(); k++) {
             Carta* c = j->verCartaEnPosicion(k);
             if (c != nullptr) c->setLado(modoOscuro);
@@ -375,7 +467,7 @@ Jugador* MotorJuego::elegirJugador() {
     }
 
     int opcion;
-    std::cin >> opcion;
+    opcion = leerEntero(1, total);
     if (opcion < 1 || opcion > total) opcion = 1;
 
     temp = jugadores.getHead();
@@ -391,4 +483,32 @@ void MotorJuego::siguienteTurno() {
     } else {
         jugadores.retroceder();
     }
+}
+
+void MotorJuego::reponerMazo() {
+    if (descarte.getSize() <= 1) {
+        std::cout << "¡ALERTA! No hay mas cartas en el descarte para reponer el mazo." << std::endl;
+        return;
+    }
+
+    std::cout << "--- Reponiendo mazo desde el descarte... ---" << std::endl;
+
+    // Guardamos la carta de arriba (la que está en juego)
+    Carta* cartaEnJuego = descarte.pop();
+
+    // pasamos lo del descarte al mazo
+    while (!descarte.isEmpty()) {
+        Carta* c = descarte.pop();
+        //si la carta era un Comodín/Negra, reseteamos su color elegido
+        CartaNegra* negra = dynamic_cast<CartaNegra*>(c);
+        if (negra) negra->setColorElegido(NEGRO);
+
+        mazo.push(c);
+    }
+
+    // devolvemos la carta en juego al descarte
+    descarte.push(cartaEnJuego);
+
+    // barajamos el nuev mazo
+    barajarMazo();
 }

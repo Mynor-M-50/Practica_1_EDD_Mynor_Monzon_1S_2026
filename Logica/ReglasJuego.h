@@ -1,21 +1,26 @@
+//
+// Created by mynorm50 on 15/2/26.
+//
+
 #ifndef REGLAS_JUEGO_H
 #define REGLAS_JUEGO_H
 
 class ReglasJuego {
 private:
-    // --- Flags de Jugabilidad ---
+    // flags de juego
     bool acumulacionActiva;
     bool retoMas4Activo;
     bool gritoUnoObligatorio;
     bool saltoTodosActivo;
     bool colorEternoActivo;
+    bool expansionFlipActiva;
 
-    // --- Configuración de Partida ---
+    // configuracion
     int numJugadores;
     int numMazos;
     int cartasIniciales;
 
-    // --- Estado Global del Juego ---
+    // estado del jueego
     bool modoOscuro;
 
 public:
@@ -36,13 +41,16 @@ public:
     void setColorEterno(bool valor);
     bool getColorEterno() const;
 
-    void setNumJugadores(int n); // Calcula numMazos automáticamente
+    void setNumJugadores(int n);
     int getNumJugadores() const;
     int getNumMazos() const;
     int getCartasIniciales() const;
 
     bool esModoOscuro() const;
     void conmutarModo();
+
+    void setExpansionFlip(bool valor);
+    bool getExpansionFlip() const;
 };
 
 #endif
