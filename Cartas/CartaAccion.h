@@ -5,7 +5,7 @@
 
 class CartaAccion : public Carta {
 public:
-    CartaAccion(Color cClaro, std::string tipoClaro, Color cOscuro, std::string tipoOscuro);
+    CartaAccion(Color cClaro, std::string tClaro, Color cOscuro, std::string tOscuro);
 
     void mostrar() const;
     bool esJugable(Carta* otra, bool acumulacionActiva) const;

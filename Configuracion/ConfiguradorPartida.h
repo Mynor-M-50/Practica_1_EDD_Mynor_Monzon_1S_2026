@@ -1,8 +1,24 @@
-//
-// Created by mynorm50 on 10/2/26.
-//
+#ifndef CONFIGURADOR_PARTIDA_H
+#define CONFIGURADOR_PARTIDA_H
 
-#ifndef PRACTICA_1_CONFIGURADORPARTIDA_H
-#define PRACTICA_1_CONFIGURADORPARTIDA_H
+#include "../Logica/ReglasJuego.h"
+#include "../Estructuras/ListaCircular.h"
+#include "../Jugador/Jugador.h"
 
-#endif //PRACTICA_1_CONFIGURADORPARTIDA_H
+class ConfiguradorPartida {
+private:
+    ReglasJuego reglas;
+    ListaCircular<Jugador*> jugadores;
+
+public:
+    ConfiguradorPartida();
+    
+    // El método principal que hace las preguntas por consola
+    void configurarNuevaPartida();
+
+    // Getters para que el MotorJuego obtenga lo configurado
+    ReglasJuego getReglas() const;
+    ListaCircular<Jugador*> getJugadores() const;
+};
+
+#endif

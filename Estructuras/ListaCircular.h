@@ -9,21 +9,33 @@ template <typename T>
 class ListaCircular {
 private:
     Nodo<T>* head;
+    Nodo<T>* actual;
 
 public:
-    ListaCircular() : head(nullptr) {}
+    ListaCircular() : head(nullptr), actual(nullptr) {}
+
+    ListaCircular(const ListaCircular<T>& otra) : head(nullptr), actual(nullptr) {
+        if (otra.isEmpty()) return;
+        Nodo<T>* temp = otra.head;
+        do {
+            this->insertLast(temp->getValor());
+            temp = temp->getSiguiente();
+        } while (temp != otra.head);
+        this->actual = this->head;
+    }
 
     ~ListaCircular() {
         if (isEmpty()) return;
 
-        Nodo<T>* actual = head->getSiguiente();
-        while (actual != head) {
-            Nodo<T>* temp = actual;
-            actual = actual->getSiguiente();
-            delete temp;
+        Nodo<T>* temp = head->getSiguiente(); // ✅ Renombrado a temp
+        while (temp != head) {
+            Nodo<T>* aBorrar = temp;
+            temp = temp->getSiguiente();
+            delete aBorrar;
         }
         delete head;
         head = nullptr;
+        actual = nullptr; // ✅ Limpiamos el atributo también
     }
 
     bool isEmpty() const {
@@ -193,6 +205,34 @@ public:
             actual = actual->getSiguiente();
         }
         std::cout << std::endl;
+    }
+
+    // Para el manejo de turnos
+    void insertar(const T& value) {
+        insertLast(value);
+        if (actual == nullptr) actual = head;
+    }
+
+    Nodo<T>* getActual() const {
+        return actual;
+    }
+
+    void avanzar() {
+        if (actual != nullptr)
+            actual = actual->getSiguiente();
+    }
+
+    void retroceder() {
+        if (isEmpty()) return;
+        // En una lista circular simple, retroceder requiere ir hasta el nodo anterior
+        Nodo<T>* temp = actual;
+        Nodo<T>* prev = head;
+
+        // Buscamos el nodo anterior al actual
+        while (prev->getSiguiente() != temp) {
+            prev = prev->getSiguiente();
+        }
+        actual = prev;
     }
 };
 

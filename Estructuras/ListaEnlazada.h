@@ -98,12 +98,11 @@ public:
         return actual;
     }
 
-    // Búsqueda genérica usando un predicado (lambda)
-    template <typename Predicado>
-    Nodo<T>* buscar(Predicado pred) const {
+    // Buscar por valor
+    Nodo<T>* buscar(const T& valor) const {
         Nodo<T>* actual = head;
         while (actual != nullptr) {
-            if (pred(actual->getValor())) {
+            if (actual->getValor() == valor) {
                 return actual;
             }
             actual = actual->getSiguiente();

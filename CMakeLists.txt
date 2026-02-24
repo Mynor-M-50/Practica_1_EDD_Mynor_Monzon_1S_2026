@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.1)
+cmake_minimum_required(VERSION 3.16)
 project(Practica_1)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -33,7 +33,7 @@ add_executable(Practica_1
         Cartas/CartaNegra.h
         Cartas/CartaFlip.cpp
         Cartas/CartaFlip.h
-        Cartas/Personalizadas/CartaPersonalizada1.cpp
-        Cartas/Personalizadas/CartaPersonalizada1.h
-        Cartas/Personalizadas/CartaPersonalizada2.cpp
-        Cartas/Personalizadas/CartaPersonalizada2.h)
+        Encabezado.h
+        Cartas/Personalizadas/CartaPersonalizada.cpp
+        Cartas/Personalizadas/CartaPersonalizada.h
+)

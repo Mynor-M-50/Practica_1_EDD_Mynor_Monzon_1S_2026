@@ -34,17 +34,23 @@ public:
         size++;
     }
 
-    void pop() {
-        if (isEmpty()) return;
+    T pop() {
+        if (isEmpty()) return T();
 
         Nodo<T>* temp = top;
+        T valor = temp->getValor();
         top = top->getSiguiente();
         delete temp;
         size--;
+        return valor;
     }
 
     T peek() const {
         return top->getValor();
+    }
+
+    Nodo<T>* getTop() const {
+        return top;
     }
 };
 

@@ -2,31 +2,29 @@
 #define JUGADOR_H
 
 #include <string>
-#include "../estructuras/ListaEnlazada.h"
-#include "../cartas/Carta.h"
-
-using namespace std; // Para no usar std:: cada vez
+#include "../Estructuras/ListaEnlazada.h"
+#include "../Cartas/Carta.h"
 
 class Jugador {
 private:
-    string nombre;
-    ListaEnlazada<Carta*> mano; // Mi propia estructura
+    std::string nombre;
+    ListaEnlazada<Carta*> mano;
     bool dijoUno;
     bool activo;
 
 public:
-    Jugador(string nombre);
+    Jugador(std::string nombre);
 
-    string getNombre();
-    void setNombre(string nuevoNombre);
+    std::string getNombre() const;
+    void setNombre(std::string nuevoNombre);
 
-    bool getDijoUno();
+    bool getDijoUno() const;
     void setDijoUno(bool valor);
 
-    bool estaActivo();
+    bool estaActivo() const;
     void setActivo(bool valor);
 
-    int getCantidadCartas();
+    int getCantidadCartas() const;
 
     // Métodos de la mano
     void agregarCarta(Carta* carta);
@@ -34,9 +32,7 @@ public:
     Carta* verCartaEnPosicion(int posicion);
 
     // Lógica
-    bool tieneCartaJugable(Carta* cartaEnMesa, bool acumulacionActiva);
-
-    void mostrarMano();
+    void mostrarMano() const;
 };
 
 #endif

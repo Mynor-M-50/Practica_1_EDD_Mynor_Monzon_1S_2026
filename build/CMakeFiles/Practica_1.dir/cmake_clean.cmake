@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/Practica_1.dir/Cartas/Carta.cpp.o"
+  "CMakeFiles/Practica_1.dir/Cartas/Carta.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaAccion.cpp.o"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaAccion.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaFlip.cpp.o"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaFlip.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaNegra.cpp.o"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaNegra.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaNumero.cpp.o"
+  "CMakeFiles/Practica_1.dir/Cartas/CartaNumero.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Cartas/Personalizadas/CartaPersonalizada.cpp.o"
+  "CMakeFiles/Practica_1.dir/Cartas/Personalizadas/CartaPersonalizada.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Configuracion/ConfiguradorPartida.cpp.o"
+  "CMakeFiles/Practica_1.dir/Configuracion/ConfiguradorPartida.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Estructuras/ListaCircular.cpp.o"
+  "CMakeFiles/Practica_1.dir/Estructuras/ListaCircular.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Estructuras/ListaEnlazada.cpp.o"
+  "CMakeFiles/Practica_1.dir/Estructuras/ListaEnlazada.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Estructuras/Nodo.cpp.o"
+  "CMakeFiles/Practica_1.dir/Estructuras/Nodo.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Estructuras/Pila.cpp.o"
+  "CMakeFiles/Practica_1.dir/Estructuras/Pila.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Jugador/Jugador.cpp.o"
+  "CMakeFiles/Practica_1.dir/Jugador/Jugador.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Logica/ReglasJuego.cpp.o"
+  "CMakeFiles/Practica_1.dir/Logica/ReglasJuego.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Logica/ValidadorFlip.cpp.o"
+  "CMakeFiles/Practica_1.dir/Logica/ValidadorFlip.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/Motor/MotorJuego.cpp.o"
+  "CMakeFiles/Practica_1.dir/Motor/MotorJuego.cpp.o.d"
+  "CMakeFiles/Practica_1.dir/main.cpp.o"
+  "CMakeFiles/Practica_1.dir/main.cpp.o.d"
+  "Practica_1"
+  "Practica_1.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/Practica_1.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
