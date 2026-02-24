@@ -58,7 +58,7 @@ bool ValidadorFlip::coincidenTipo(Carta* a, Carta* b) {
 
 bool ValidadorFlip::esCartaEspecial(Carta* a) {
     std::string tipo = a->getTipoActual();
-    return (tipo == "Salto" || tipo == "Reversa" || tipo == "SaltoTodos" ||
+    return (tipo == "Salto" || tipo == "Reversa" || tipo == "Salto a Todos" ||
             tipo == "Mas 1 (+1)"  || tipo == "Mas 2 (+2)"    || tipo == "Mas 3 (+3)"       ||
             tipo == "Mas 4 (+4)"  || tipo == "Mas 6 (+6)"    || tipo == "Portal"     ||
             tipo == "ColorEterno" || tipo == "PistolaLaser" || tipo == "CanonLaser");

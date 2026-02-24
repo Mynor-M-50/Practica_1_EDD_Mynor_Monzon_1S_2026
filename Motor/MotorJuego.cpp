@@ -296,7 +296,11 @@ void MotorJuego::aplicarEfecto(Carta* carta, Jugador* jugadorActual) {
 
     } else if (tipo == "Salto a Todos") {
         std::cout << "Salto a TODOS! - Vuelves a jugar." << std::endl;
-        // No avanzamos
+        if (sentidoHorario) {
+            jugadores.retroceder();
+        } else {
+            jugadores.avanzar();
+        }
 
     } else if (tipo == "Reversa") {
         sentidoHorario = !sentidoHorario;
