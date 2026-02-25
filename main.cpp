@@ -8,7 +8,8 @@
 
 int main() {
     std::cout << "========================================\n";
-    std::cout << "               UNO / UNO FLIP           \n";
+    std::cout << "         Bienvenido al juego UNO        \n";
+    std::cout << "        (Con la expansion UNO FLIP)     \n";
     std::cout << "========================================\n\n";
 
     ConfiguradorPartida configurador;
