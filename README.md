@@ -4,5 +4,4 @@
 - [TADs y Analisis de Complejidad](TADs_Analisis_P1.pdf)
 
 ## Diagrama de Clases (UML)
-
-![UML - Jerarquía de Cartas](Diagrama_UML_P1.png)
+![UML - Jerarquia de Cartas](Diagrama_UML_P1.pdf)
